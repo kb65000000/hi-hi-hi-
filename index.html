@@ -1152,7 +1152,7 @@ function checkout() {
     ).join('\n');
 
     const whatsappMessage = `مرحباً، أريد طلب من مطعم الذواقة:\n\n${orderDetails}\n\nالمجموع: ${total} دينار`;
-    const whatsappURL = `https://wa.me/962797459207 ?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappURL = `https://wa.me/962797459207?text=${encodeURIComponent(whatsappMessage)}`;
 
     window.open(whatsappURL, '_blank');
 
