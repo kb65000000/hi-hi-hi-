@@ -1151,11 +1151,19 @@ function checkout() {
         `${item.name} (${item.size}) - الكمية: ${item.quantity} - ${item.total} دينار`
     ).join('\n');
 
+    // استخدم هذا التنسيق للرقم
+    const phoneNumber = '962797459207'; // أو '00962797459207'
+    
     const whatsappMessage = `مرحباً، أريد طلب من مطعم الذواقة:\n\n${orderDetails}\n\nالمجموع: ${total} دينار`;
-    const whatsappURL = `https://wa.me/962797459207?text=${encodeURIComponent(whatsappMessage)}`;
-
-    window.open(whatsappURL, '_blank');
-
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    
+    // جرب أحد هذه الصيغ:
+    const whatsappURL1 = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    const whatsappURL2 = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+    
+    // افتح الرابط في نافذة جديدة
+    window.open(whatsappURL1, '_blank', 'noopener,noreferrer');
+    
     // مسح السلة بعد الطلب
     setTimeout(() => {
         clearCart();
