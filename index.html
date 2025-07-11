@@ -1141,48 +1141,27 @@ function hideFloatingCart() {
 
 // إتمام الطلب
 function checkout() {
-    try {
-        if (cart.length === 0) {
-            throw new Error('السلة فارغة');
-        }
-
-        const total = cart.reduce((sum, item) => sum + item.total, 0);
-        const orderDetails = cart.map(item =>
-            `${item.name} (${item.size}) - الكمية: ${item.quantity} - ${item.total} دينار`
-        ).join('\n');
-
-        console.log("جاري إنشاء رابط الواتساب..."); // تأكيد وصول الكود إلى هنا
-
-        const phoneNumber = '962797459207'; // تأكد من الرقم
-        console.log("رقم الهاتف المستخدم:", phoneNumber); // طباعة الرقم للتحقق
-
-        const whatsappMessage = `مرحباً، أريد طرب من مطعم الذواقة:\n\n${orderDetails}\n\nالمجموع: ${total} دينار`;
-        console.log("نص الرسالة:", whatsappMessage); // طباعة الرسالة للتحقق
-
-        const encodedMessage = encodeURIComponent(whatsappMessage);
-        console.log("الرسالة بعد التشفير:", encodedMessage); // طباعة الرسالة المشفرة
-
-        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-        console.log("الرابط النهائي:", whatsappURL); // طباعة الرابط كاملاً
-
-        // افتح الرابط في نافذة جديدة مع إضافة noopener للأمان
-        const newWindow = window.open(whatsappURL, '_blank', 'noopener,noreferrer');
-
-        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-            throw new Error('تعذر فتح نافذة الواتساب. قد يكون الحظر من المتصفح أو الاستضافة');
-        }
-
-        // مسح السلة بعد الطلب
-        setTimeout(() => {
-            clearCart();
-            closeModal('cartModal');
-            showAlert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً 📱', 'success');
-        }, 1000);
-
-    } catch (error) {
-        console.error("حدث خطأ في إتمام الطلب:", error);
-        showAlert(`حدث خطأ: ${error.message}`, 'error');
+    if (cart.length === 0) {
+        showAlert('السلة فارغة!', 'error');
+        return;
     }
+
+    const total = cart.reduce((sum, item) => sum + item.total, 0);
+    const orderDetails = cart.map(item =>
+        `${item.name} (${item.size}) - الكمية: ${item.quantity} - ${item.total} دينار`
+    ).join('\n');
+
+    const whatsappMessage = `مرحباً، أريد طلب من مطعم الذواقة:\n\n${orderDetails}\n\nالمجموع: ${total} دينار`;
+    const whatsappURL = `https://wa.me/+962797459207?text=${encodeURIComponent(whatsappMessage)}`;
+
+    window.open(whatsappURL, '_blank');
+
+    // مسح السلة بعد الطلب
+    setTimeout(() => {
+        clearCart();
+        closeModal('cartModal');
+        showAlert('تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً 📱', 'success');
+    }, 1000);
 }
 
 // إغلاق النافذة المنبثقة
